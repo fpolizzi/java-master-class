@@ -12,7 +12,7 @@ public class User {
     private String lastName;
 
     public User(UUID id, String firstName, String lastName) {
-        this.id = id = id;
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
