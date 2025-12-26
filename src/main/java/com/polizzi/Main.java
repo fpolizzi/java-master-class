@@ -3,11 +3,16 @@ package com.polizzi;
 // DONE 2. create a package with your name. i.e com.franco and move this file inside the new package
 // TODO 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f5
 
+import com.polizzi.user.User;
+import com.polizzi.user.UserService;
+
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        UserService userService = new UserService();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -35,7 +40,8 @@ public class Main {
                     // TODO: Implement view available electric cars functionality
                     break;
                 case 6:
-                    // TOOD: Implement view all users functionality
+                    displayAllUsers(userService);
+                    System.out.println();
                     break;
                 case 7:
                     System.out.println("\nThank you for using Car Booking System!");
@@ -44,6 +50,17 @@ public class Main {
                 default:
                     System.out.println("\nInvalid choice! Use an integer from 1 to 7.\n");
             }
+        }
+    }
+
+    private static void displayAllUsers(UserService userService) {
+        User[] users = userService.getUsers();
+        if (users.length == 0) {
+            System.out.println("❌ No users in the system");
+            return;
+        }
+        for (User user : users) {
+            System.out.println(user);
         }
     }
 
