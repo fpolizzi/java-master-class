@@ -9,12 +9,17 @@ import java.util.Objects;
 public class Car {
     private String registrationNumber;
     private BigDecimal rentalPricePerDay;
+    private CarBrand carBrand;
 
     private boolean isElectric;
 
-    public Car(String registrationNumber, BigDecimal rentalPricePerDay, boolean isElectric) {
+    public Car(String registrationNumber,
+               BigDecimal rentalPricePerDay,
+               CarBrand carBrand,
+               boolean isElectric) {
         this.registrationNumber = registrationNumber;
         this.rentalPricePerDay = rentalPricePerDay;
+        this.carBrand = carBrand;
         this.isElectric = isElectric;
     }
 
@@ -34,6 +39,14 @@ public class Car {
         this.rentalPricePerDay = rentalPricePerDay;
     }
 
+    public CarBrand getCarBrand() {
+        return carBrand;
+    }
+
+    public void setCarBrand(CarBrand carBrand) {
+        this.carBrand = carBrand;
+    }
+
     public boolean isElectric() {
         return isElectric;
     }
@@ -47,6 +60,7 @@ public class Car {
         return "Car{" +
                 "registrationNumber='" + registrationNumber + '\'' +
                 ", rentalPricePerDay=" + rentalPricePerDay +
+                ", carBrand=" + carBrand +
                 ", isElectric=" + isElectric +
                 '}';
     }
@@ -58,11 +72,12 @@ public class Car {
         Car car = (Car) o;
         return isElectric == car.isElectric &&
                 Objects.equals(registrationNumber, car.registrationNumber) &&
-                Objects.equals(rentalPricePerDay, car.rentalPricePerDay);
+                Objects.equals(rentalPricePerDay, car.rentalPricePerDay) &&
+                carBrand == car.carBrand;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(registrationNumber, rentalPricePerDay, isElectric);
+        return Objects.hash(registrationNumber, rentalPricePerDay, carBrand, isElectric);
     }
 }
