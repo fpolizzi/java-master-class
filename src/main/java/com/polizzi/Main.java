@@ -3,6 +3,8 @@ package com.polizzi;
 // DONE 2. create a package with your name. i.e com.franco and move this file inside the new package
 // TODO 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f5
 
+import com.polizzi.car.Car;
+import com.polizzi.car.CarService;
 import com.polizzi.user.User;
 import com.polizzi.user.UserService;
 
@@ -13,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
 
         UserService userService = new UserService();
+        CarService carService = new CarService();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -34,10 +37,11 @@ public class Main {
                     // TODO: Implement view all bookings functionality
                     break;
                 case 4:
-                    // TODO: Implement view available cars functionality
+                    displayAllAvailableCars(carService);
                     break;
                 case 5:
-                    // TODO: Implement view available electric cars functionality
+                    displayAllAvailableElectricCars(carService);
+                    System.out.println();
                     break;
                 case 6:
                     displayAllUsers(userService);
@@ -61,6 +65,28 @@ public class Main {
         }
         for (User user : users) {
             System.out.println(user);
+        }
+    }
+
+    private static void displayAllAvailableCars(CarService carService) {
+        Car[] cars = carService.getAllCars();
+        if (cars.length == 0) {
+            System.out.println("❌ No cars available");
+            return;
+        }
+        for (Car car : cars) {
+            System.out.println(car);
+        }
+    }
+
+    private static void displayAllAvailableElectricCars(CarService carService) {
+        Car[] electricCars = carService.getAllElectricCars();
+        if (electricCars.length == 0) {
+            System.out.println("❌ No electric cars available");
+            return;
+        }
+        for (Car car : electricCars) {
+            System.out.println(car);
         }
     }
 
