@@ -14,8 +14,6 @@ public class CarService {
         for (Car car : getAllCars()) {
             if (registrationNumber.equals(car.getRegistrationNumber())) {
                 return car;
-            } else {
-                break;
             }
         }
         return null;

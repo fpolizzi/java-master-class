@@ -26,7 +26,7 @@ public class CarBookingService {
             if (availableCar.getRegistrationNumber().equals(registrationNumber)) {
                 Car car = carService.getCar(registrationNumber);
                 UUID bookingId = UUID.randomUUID();
-                carBookingDao.book(
+                carBookingDao.saveBooking(
                         new CarBooking(bookingId, user, car, LocalDateTime.now())
                 );
                 // at this point we are done therefore, we can exit this method
@@ -85,20 +85,30 @@ public class CarBookingService {
             return cars;
         }
 
-        // this variable is used to create a new array for availableCars since we need the size
-        Car[] availableCars = getAvailableCars(cars, carBookings);
-        int index = 0;
-
-        // populate available cars
+        int availableCarsCount = 0;
         for (Car car : cars) {
-            // let's check if car part of any booking.
-            // if not, then it's available, but this time we add it to available cars
             boolean booked = false;
             for (CarBooking carBooking : carBookings) {
-                if (carBooking == null || !carBooking.getCar().equals(car)) {
-                    continue;
+                if (carBooking != null && carBooking.getCar().equals(car)) {
+                    booked = true;
+                    break;
                 }
-                booked = true;
+            }
+            if (!booked) {
+                availableCarsCount++;
+            }
+        }
+
+        Car[] availableCars = new Car[availableCarsCount];
+        int index = 0;
+
+        for (Car car : cars) {
+            boolean booked = false;
+            for (CarBooking carBooking : carBookings) {
+                if (carBooking != null && carBooking.getCar().equals(car)) {
+                    booked = true;
+                    break;
+                }
             }
             if (!booked) {
                 availableCars[index++] = car;
@@ -106,26 +116,6 @@ public class CarBookingService {
         }
 
         return availableCars;
-    }
-
-    private static Car[] getAvailableCars(Car[] cars, CarBooking[] carBookings) {
-        int availableCarsCount = 0;
-
-        for (Car car : cars) {
-            // let's check if car part of any booking. if not, then it's available
-            boolean booked = false;
-            for (CarBooking carBooking : carBookings) {
-                if (carBooking == null || !carBooking.getCar().equals(car)) {
-                    continue;
-                }
-                booked = true;
-            }
-            if (!booked) {
-                ++availableCarsCount;
-            }
-        }
-
-        return new Car[availableCarsCount];
     }
 
     public CarBooking[] getBookings() {

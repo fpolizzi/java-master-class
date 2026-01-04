@@ -1,13 +1,11 @@
 package com.polizzi.booking;
 
-import java.util.UUID;
-
 /**
  * Created by fpolizzi on 31.12.25
  */
 public class CarBookingDao {
 
-    private final static CarBooking[] carBookings;
+    private static CarBooking[] carBookings;
 
     static {
         carBookings = new CarBooking[10];
@@ -17,12 +15,13 @@ public class CarBookingDao {
         return carBookings;
     }
 
-    public void book(CarBooking carBooking) {
+    public void saveBooking(CarBooking carBooking) {
         int nextFreeIndex = -1;
 
         for (int i = 0; i < carBookings.length; i++) {
             if (carBookings[i] == null) {
                 nextFreeIndex = i;
+                break;
             }
         }
 
@@ -41,10 +40,6 @@ public class CarBookingDao {
 
         // add finally add new booking
         biggerCarBookings[carBookings.length] = carBooking;
-
-    }
-
-    public void cancelCarBooking(UUID id) {
-
+        carBookings = biggerCarBookings;
     }
 }

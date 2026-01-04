@@ -1,7 +1,4 @@
 package com.polizzi;
-// DONE 1. create a new branch called initial-implementation
-// DONE 2. create a package with your name. i.e., com.franco and move this file inside the new package
-// DONE 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f05
 
 import com.polizzi.booking.CarBooking;
 import com.polizzi.booking.CarBookingService;
@@ -14,12 +11,12 @@ import java.util.UUID;
 
 public class Main {
 
+    private static final UserService userService = new UserService();
+    private static final CarBookingService carBookingService = new CarBookingService();
+
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-
-        UserService userService = new UserService();
-        CarBookingService carBookingService = new CarBookingService();
-
-        Scanner scanner = new Scanner(System.in);
 
         boolean keepLooping = true;
 
@@ -131,7 +128,6 @@ public class Main {
 
     private static void displayMenu() {
         System.out.println("""
-                \n
                 1 - Book Car
                 2 - View All User Booked Cars
                 3 - View All Bookings
