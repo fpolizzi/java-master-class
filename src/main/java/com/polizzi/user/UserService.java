@@ -6,7 +6,8 @@ import java.util.UUID;
  * Created by fpolizzi on 26.12.25
  */
 public class UserService {
-    private final UserDao userDao = new UserDao();
+
+    private final UserDao userDao = new UserArrayDataAccessService();
 
     public User[] getUsers() {
         return userDao.getUsers();
