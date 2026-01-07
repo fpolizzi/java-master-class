@@ -1,4 +1,4 @@
-package com.polizzi.booking;
+package com.fpolizzi.booking;
 
 /**
  * Created by fpolizzi on 31.12.25

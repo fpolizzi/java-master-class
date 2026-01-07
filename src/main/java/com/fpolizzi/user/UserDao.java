@@ -1,4 +1,4 @@
-package com.polizzi.user;
+package com.fpolizzi.user;
 
 /**
  * Created by fpolizzi on 06.01.26

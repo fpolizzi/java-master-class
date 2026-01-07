@@ -1,8 +1,8 @@
-package com.polizzi.booking;
+package com.fpolizzi.booking;
 
-import com.polizzi.car.Car;
-import com.polizzi.car.CarService;
-import com.polizzi.user.User;
+import com.fpolizzi.car.Car;
+import com.fpolizzi.car.CarService;
+import com.fpolizzi.user.User;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

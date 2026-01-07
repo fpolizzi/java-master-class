@@ -1,4 +1,4 @@
-package com.polizzi.car;
+package com.fpolizzi.car;
 
 /**
  * Created by fpolizzi on 29.12.25

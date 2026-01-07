@@ -1,10 +1,10 @@
-package com.polizzi;
+package com.fpolizzi;
 
-import com.polizzi.booking.CarBooking;
-import com.polizzi.booking.CarBookingService;
-import com.polizzi.car.Car;
-import com.polizzi.user.User;
-import com.polizzi.user.UserService;
+import com.fpolizzi.booking.CarBooking;
+import com.fpolizzi.booking.CarBookingService;
+import com.fpolizzi.car.Car;
+import com.fpolizzi.user.User;
+import com.fpolizzi.user.UserService;
 
 import java.util.Scanner;
 import java.util.UUID;

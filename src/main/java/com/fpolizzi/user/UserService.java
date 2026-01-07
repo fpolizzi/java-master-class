@@ -1,13 +1,13 @@
-package com.polizzi.user;
+package com.fpolizzi.user;
 
 import java.util.UUID;
 
 /**
  * Created by fpolizzi on 26.12.25
  */
-public class UserService {
 
-    private final UserDao userDao = new UserArrayDataAccessService();
+public class UserService {
+    private final UserDao userDao = new UserFileDataAccessService();
 
     public User[] getUsers() {
         return userDao.getUsers();
@@ -15,7 +15,7 @@ public class UserService {
 
     public User getUserById(UUID id) {
         for (User user : getUsers()) {
-            if (user.getId().equals(id)) {
+            if (user != null && user.getId().equals(id)) {
                 return user;
             }
         }

@@ -1,4 +1,4 @@
-package com.polizzi.user;
+package com.fpolizzi.user;
 
 import java.util.UUID;
 

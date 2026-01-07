@@ -1,4 +1,4 @@
-package com.polizzi.user;
+package com.fpolizzi.user;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -6,6 +6,7 @@ import java.util.UUID;
 /**
  * Created by fpolizzi on 24.12.25
  */
+
 public class User {
     private UUID id;
     private String firstName;
