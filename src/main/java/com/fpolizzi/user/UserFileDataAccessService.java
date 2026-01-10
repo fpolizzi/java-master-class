@@ -1,7 +1,7 @@
 package com.fpolizzi.user;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -26,8 +26,9 @@ public class UserFileDataAccessService implements UserDao {
                 index++;
             }
             return users;
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found" + e.getMessage());
+            return users;
         }
     }
 }
