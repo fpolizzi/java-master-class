@@ -1,9 +1,14 @@
 package com.fpolizzi;
 
 import com.fpolizzi.booking.CarBooking;
+import com.fpolizzi.booking.CarBookingDao;
 import com.fpolizzi.booking.CarBookingService;
 import com.fpolizzi.car.Car;
+import com.fpolizzi.car.CarDao;
+import com.fpolizzi.car.CarService;
 import com.fpolizzi.user.User;
+import com.fpolizzi.user.UserDao;
+import com.fpolizzi.user.UserFileDataAccessService;
 import com.fpolizzi.user.UserService;
 
 import java.util.Scanner;
@@ -11,12 +16,21 @@ import java.util.UUID;
 
 public class Main {
 
-    private static final UserService userService = new UserService();
-    private static final CarBookingService carBookingService = new CarBookingService();
-
-    static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) {
+        // dependency
+        UserDao userDao = new UserFileDataAccessService();
+        // inject dependency
+        UserService userService = new UserService(userDao);
+
+        // dependencies
+        CarBookingDao carBookingDao = new CarBookingDao();
+        CarDao carDao = new CarDao();
+
+        // inject dependencies
+        CarService carService = new CarService(carDao);
+        CarBookingService carBookingService = new CarBookingService(carBookingDao, carService);
+
+        Scanner scanner = new Scanner(System.in);
 
         boolean keepLooping = true;
 
