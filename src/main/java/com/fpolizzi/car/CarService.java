@@ -48,9 +48,9 @@ public class CarService {
 
         int index = 0;
 
-        for (int i = 0; i < cars.length; i++) {
-            if (cars[i].isElectric()) {
-                electricCars[index++] = cars[i];
+        for (Car car : cars) {
+            if (car.isElectric()) {
+                electricCars[index++] = car;
             }
         }
 
