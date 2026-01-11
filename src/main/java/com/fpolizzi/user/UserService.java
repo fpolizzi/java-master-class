@@ -5,9 +5,14 @@ import java.util.UUID;
 /**
  * Created by fpolizzi on 26.12.25
  */
-
 public class UserService {
-    private final UserDao userDao = new UserFileDataAccessService();
+    // dependency
+    private final UserDao userDao;
+
+    // inject dependency
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public User[] getUsers() {
         return userDao.getUsers();

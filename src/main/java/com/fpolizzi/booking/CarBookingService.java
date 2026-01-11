@@ -11,8 +11,15 @@ import java.util.UUID;
  * Created by fpolizzi on 31.12.25
  */
 public class CarBookingService {
-    private final CarBookingDao carBookingDao = new CarBookingDao();
-    private final CarService carService = new CarService();
+    // dependencies
+    private final CarBookingDao carBookingDao;
+    private final CarService carService;
+
+    // inject dependencies
+    public CarBookingService(CarBookingDao carBookingDao, CarService carService) {
+        this.carBookingDao = carBookingDao;
+        this.carService = carService;
+    }
 
     public UUID bookCar(User user, String registrationNumber) {
         Car[] availableCars = getAvailableCars();
@@ -61,7 +68,6 @@ public class CarBookingService {
         }
         return userCars;
     }
-
 
     public Car[] getAvailableCars() {
         return getCars(carService.getAllCars());

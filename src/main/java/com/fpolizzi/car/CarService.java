@@ -4,7 +4,13 @@ package com.fpolizzi.car;
  * Created by fpolizzi on 29.12.25
  */
 public class CarService {
-    private final CarDao carDao = new CarDao();
+    // dependency
+    private final CarDao carDao;
+
+    // inject dependency
+    public CarService(CarDao carDao) {
+        this.carDao = carDao;
+    }
 
     public Car[] getAllCars() {
         return carDao.getAllCars();
