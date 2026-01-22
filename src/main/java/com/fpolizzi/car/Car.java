@@ -78,6 +78,7 @@ public class Car {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(registrationNumber, rentalPricePerDay, carBrand, isElectric);
     }
 }
