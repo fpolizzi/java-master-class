@@ -1,5 +1,8 @@
 package com.fpolizzi.car;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by fpolizzi on 29.12.25
  */
@@ -12,7 +15,7 @@ public class CarService {
         this.carDao = carDao;
     }
 
-    public Car[] getAllCars() {
+    public List<Car> getAllCars() {
         return carDao.getAllCars();
     }
 
@@ -25,32 +28,12 @@ public class CarService {
         return null;
     }
 
-    public Car[] getAllElectricCars() {
-        int electricCarsCount = 0;
+    public List<Car> getAllElectricCars() {
+        List<Car> electricCars = new ArrayList<>();
 
-        Car[] cars = getAllCars();
-
-        if (cars.length == 0) {
-            return new Car[0];
-        }
-
-        for (Car car : cars) {
+        for (Car car : getAllCars()) {
             if (car.isElectric()) {
-                electricCarsCount++;
-            }
-        }
-
-        if (electricCarsCount == 0) {
-            return new Car[0];
-        }
-
-        Car[] electricCars = new Car[electricCarsCount];
-
-        int index = 0;
-
-        for (Car car : cars) {
-            if (car.isElectric()) {
-                electricCars[index++] = car;
+                electricCars.add(car);
             }
         }
 
