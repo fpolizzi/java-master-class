@@ -5,9 +5,11 @@ import com.fpolizzi.car.CarService;
 import com.fpolizzi.user.User;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by fpolizzi on 31.12.25
@@ -30,31 +32,25 @@ public class CarBookingService {
             throw new IllegalStateException("No car available for renting");
         }
 
-        for (Car availableCar : availableCars) {
-            // let's make sure the car user wants still available
-            if (availableCar.getRegistrationNumber().equals(registrationNumber)) {
-                Car car = carService.getCar(registrationNumber);
-                UUID bookingId = UUID.randomUUID();
-                carBookingDao.saveBooking(
-                        new CarBooking(bookingId, user, car, LocalDateTime.now())
-                );
-                // at this point we are done therefore, we can exit this method
-                return bookingId;
-            }
+        boolean carAvailable = availableCars.stream()
+                .anyMatch(car -> car.getRegistrationNumber().equals(registrationNumber));
+
+        if (!carAvailable) {
+            throw new IllegalStateException("Already booked. car with regNumber " + registrationNumber);
         }
-        throw new IllegalStateException("Already booked. car with regNumber " + registrationNumber);
+
+        Optional<Car> car = carService.getCar(registrationNumber);
+        UUID bookingId = UUID.randomUUID();
+        carBookingDao.saveBooking(new CarBooking(bookingId, user, car, LocalDateTime.now()));
+        return bookingId;
     }
 
     public List<Car> getUserBookedCars(UUID userId) {
-        List<Car> userCars = new ArrayList<>();
-
-        for (CarBooking carBooking : carBookingDao.getCarBookings()) {
-            if (carBooking.getUser().getId().equals(userId)) {
-                userCars.add(carBooking.getCar());
-            }
-        }
-
-        return userCars;
+        return carBookingDao.getCarBookings().stream()
+                .filter(booking -> booking.getUser().getId().equals(userId))
+                .map(CarBooking::getCar)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
     }
 
     public List<Car> getAvailableCars() {
@@ -66,37 +62,17 @@ public class CarBookingService {
     }
 
     private List<Car> getCars(List<Car> cars) {
-        // no cars in the system yet
-        if (cars.isEmpty()) {
-            return new ArrayList<>();
-        }
+        Set<Car> bookedCars = carBookingDao.getCarBookings().stream()
+                .map(CarBooking::getCar)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toSet());
 
-        List<CarBooking> carBookings = carBookingDao.getCarBookings();
-
-        // no bookings yet, so all cars are available
-        if (carBookings.isEmpty()) {
-            return new ArrayList<>(cars);
-        }
-
-        List<Car> availableCars = new ArrayList<>();
-
-        for (Car car : cars) {
-            boolean booked = false;
-            for (CarBooking carBooking : carBookings) {
-                if (carBooking.getCar().equals(car)) {
-                    booked = true;
-                    break;
-                }
-            }
-            if (!booked) {
-                availableCars.add(car);
-            }
-        }
-
-        return availableCars;
+        return cars.stream()
+                .filter(car -> !bookedCars.contains(car))
+                .collect(Collectors.toList());
     }
 
     public List<CarBooking> getBookings() {
-        return new ArrayList<>(carBookingDao.getCarBookings());
+        return carBookingDao.getCarBookings().stream().collect(Collectors.toList());
     }
 }
