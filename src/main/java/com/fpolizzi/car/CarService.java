@@ -1,6 +1,7 @@
 package com.fpolizzi.car;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -19,21 +20,17 @@ public class CarService {
         return carDao.getAllCars();
     }
 
-    public Car getCar(String registrationNumber) {
-        for (Car car : getAllCars()) {
-            if (registrationNumber.equals(car.getRegistrationNumber())) {
-                return car;
-            }
-        }
-        return null;
+    public Optional<Car> getCar(String registrationNumber) {
+        return getAllCars()
+                .stream()
+                .filter(car -> registrationNumber.equals(car.getRegistrationNumber()))
+                .findFirst();
     }
 
     public List<Car> getAllElectricCars() {
-        List<Car> electricCars = getAllCars()
+        return getAllCars()
                 .stream()
                 .filter(car -> car.isElectric())
                 .collect(Collectors.toList());
-
-        return electricCars;
     }
 }
