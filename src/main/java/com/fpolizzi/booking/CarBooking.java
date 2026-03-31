@@ -5,6 +5,7 @@ import com.fpolizzi.user.User;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -13,20 +14,15 @@ import java.util.UUID;
 public class CarBooking {
     private UUID bookingId;
     private User user;
-    private Car car;
+    private Optional<Car> car;
     private LocalDateTime bookingTime;
     private boolean isCanceled;
-
-    public CarBooking(UUID bookingId, User user, Car car, LocalDateTime bookingTime, boolean isCanceled) {
+    
+    public CarBooking(UUID bookingId, User user, Optional<Car> car, LocalDateTime bookingTime) {
         this.bookingId = bookingId;
         this.user = user;
         this.car = car;
         this.bookingTime = bookingTime;
-        this.isCanceled = isCanceled;
-    }
-
-    public CarBooking(UUID bookingId, User user, Car car, LocalDateTime bookingTime) {
-        this(bookingId, user, car, bookingTime, false);
     }
 
     public UUID getBookingId() {
@@ -45,12 +41,12 @@ public class CarBooking {
         this.user = user;
     }
 
-    public Car getCar() {
+    public Optional<Car> getCar() {
         return car;
     }
 
     public void setCar(Car car) {
-        this.car = car;
+        this.car = Optional.ofNullable(car);
     }
 
     public LocalDateTime getBookingTime() {
