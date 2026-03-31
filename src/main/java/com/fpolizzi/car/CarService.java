@@ -1,7 +1,7 @@
 package com.fpolizzi.car;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by fpolizzi on 29.12.25
@@ -29,13 +29,10 @@ public class CarService {
     }
 
     public List<Car> getAllElectricCars() {
-        List<Car> electricCars = new ArrayList<>();
-
-        for (Car car : getAllCars()) {
-            if (car.isElectric()) {
-                electricCars.add(car);
-            }
-        }
+        List<Car> electricCars = getAllCars()
+                .stream()
+                .filter(car -> car.isElectric())
+                .collect(Collectors.toList());
 
         return electricCars;
     }
