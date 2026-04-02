@@ -16,17 +16,12 @@ public class CarBooking {
     private Car car;
     private LocalDateTime bookingTime;
     private boolean isCanceled;
-
-    public CarBooking(UUID bookingId, User user, Car car, LocalDateTime bookingTime, boolean isCanceled) {
+    
+    public CarBooking(UUID bookingId, User user, Car car, LocalDateTime bookingTime) {
         this.bookingId = bookingId;
         this.user = user;
         this.car = car;
         this.bookingTime = bookingTime;
-        this.isCanceled = isCanceled;
-    }
-
-    public CarBooking(UUID bookingId, User user, Car car, LocalDateTime bookingTime) {
-        this(bookingId, user, car, bookingTime, false);
     }
 
     public UUID getBookingId() {
