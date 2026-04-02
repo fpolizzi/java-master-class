@@ -6,7 +6,6 @@ import com.fpolizzi.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -39,7 +38,8 @@ public class CarBookingService {
             throw new IllegalStateException("Already booked. car with regNumber " + registrationNumber);
         }
 
-        Optional<Car> car = carService.getCar(registrationNumber);
+        Car car = carService.getCar(registrationNumber)
+                .orElseThrow(() -> new IllegalStateException("Car not found with regNumber " + registrationNumber));
         UUID bookingId = UUID.randomUUID();
         carBookingDao.saveBooking(new CarBooking(bookingId, user, car, LocalDateTime.now()));
         return bookingId;
@@ -49,7 +49,6 @@ public class CarBookingService {
         return carBookingDao.getCarBookings().stream()
                 .filter(booking -> booking.getUser().getId().equals(userId))
                 .map(CarBooking::getCar)
-                .flatMap(Optional::stream)
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +63,6 @@ public class CarBookingService {
     private List<Car> getCars(List<Car> cars) {
         Set<Car> bookedCars = carBookingDao.getCarBookings().stream()
                 .map(CarBooking::getCar)
-                .flatMap(Optional::stream)
                 .collect(Collectors.toSet());
 
         return cars.stream()
@@ -73,6 +71,6 @@ public class CarBookingService {
     }
 
     public List<CarBooking> getBookings() {
-        return carBookingDao.getCarBookings().stream().collect(Collectors.toList());
+        return carBookingDao.getCarBookings();
     }
 }
