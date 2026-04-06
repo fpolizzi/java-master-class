@@ -8,7 +8,7 @@ import com.fpolizzi.car.CarDao;
 import com.fpolizzi.car.CarService;
 import com.fpolizzi.user.User;
 import com.fpolizzi.user.UserDao;
-import com.fpolizzi.user.UserFileDataAccessService;
+import com.fpolizzi.user.UserFakerDataAccessService;
 import com.fpolizzi.user.UserService;
 
 import java.util.List;
@@ -19,7 +19,8 @@ public class Main {
 
     public static void main(String[] args) {
         // dependency
-        UserDao userDao = new UserFileDataAccessService();
+        UserDao userDao = new UserFakerDataAccessService();
+
         // inject dependency
         UserService userService = new UserService(userDao);
 
