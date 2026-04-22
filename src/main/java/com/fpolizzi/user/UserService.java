@@ -1,6 +1,7 @@
 package com.fpolizzi.user;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -19,12 +20,9 @@ public class UserService {
         return userDao.getUsers();
     }
 
-    public User getUserById(UUID id) {
-        for (User user : getUsers()) {
-            if (user != null && user.getId().equals(id)) {
-                return user;
-            }
-        }
-        return null;
+    public Optional<User> getUserById(UUID id) {
+        return getUsers().stream()
+                .filter(user -> user != null && user.getId().equals(id))
+                .findFirst();
     }
 }

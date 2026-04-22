@@ -6,6 +6,7 @@ import com.fpolizzi.car.CarService;
 import com.fpolizzi.user.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,19 +48,24 @@ class CarBookingServiceMockitoTest {
 
     @Test
     void bookCar_shouldReturnBookingId_whenCarIsAvailable() {
+        User user = user(UUID.randomUUID());
         Car available = car("ABC123", false);
         when(carService.getAllCars()).thenReturn(List.of(available));
         when(carBookingDao.getCarBookings()).thenReturn(List.of());
         when(carService.getCar("ABC123")).thenReturn(Optional.of(available));
 
-        UUID bookingId = underTest.bookCar(user(UUID.randomUUID()), "ABC123");
+        UUID bookingId = underTest.bookCar(user, "ABC123");
 
-        assertThat(bookingId).isNotNull();
-        verify(carBookingDao).saveBooking(any(CarBooking.class));
+        ArgumentCaptor<CarBooking> captor = ArgumentCaptor.forClass(CarBooking.class);
+        verify(carBookingDao).saveBooking(captor.capture());
+        CarBooking saved = captor.getValue();
+        assertThat(saved.getUser()).isEqualTo(user);
+        assertThat(saved.getCar()).isEqualTo(available);
+        assertThat(bookingId).isEqualTo(saved.getBookingId());
     }
 
     @Test
-    void bookCar_throwsException_whenNoAvailableCars() {
+    void bookCar_throwsException_whenAllCarsAreAlreadyBooked() {
         Car car = car("ABC123", false);
         CarBooking existingBooking = new CarBooking(UUID.randomUUID(), user(UUID.randomUUID()), car, null);
         when(carService.getAllCars()).thenReturn(List.of(car));

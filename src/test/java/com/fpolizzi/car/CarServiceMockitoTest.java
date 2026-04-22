@@ -34,7 +34,7 @@ class CarServiceMockitoTest {
 
         List<Car> result = underTest.getAllCars();
 
-        assertThat(result).hasSize(3);
+        assertThat(result).containsExactlyInAnyOrder(cars.toArray(new Car[0]));
     }
 
     @Test

@@ -97,7 +97,7 @@ public class Main {
         System.out.println("➡️ select user id");
         String userId = scanner.nextLine();
 
-        User user = userService.getUserById(UUID.fromString(userId));
+        User user = userService.getUserById(UUID.fromString(userId)).orElse(null);
         if (user == null) {
             System.out.println("❌ No user found with id " + userId);
             return;
@@ -125,7 +125,7 @@ public class Main {
         String userId = scanner.nextLine();
 
         try {
-            User user = userService.getUserById(UUID.fromString(userId));
+            User user = userService.getUserById(UUID.fromString(userId)).orElse(null);
             if (user == null) {
                 System.out.println("❌ No user found with id " + userId);
             } else {
