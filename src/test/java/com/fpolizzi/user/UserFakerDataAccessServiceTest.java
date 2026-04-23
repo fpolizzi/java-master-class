@@ -36,21 +36,13 @@ class UserFakerDataAccessServiceTest {
     }
 
     @Test
-    void getUsers_shouldReturnUsersWithNonBlankFirstNames() {
+    void getUsers_shouldReturnUsersWithNonBlankNames() {
         List<User> result = underTest.getUsers();
 
-        assertThat(result).allSatisfy(user ->
-                assertThat(user.getFirstName()).isNotBlank()
-        );
-    }
-
-    @Test
-    void getUsers_shouldReturnUsersWithNonBlankLastNames() {
-        List<User> result = underTest.getUsers();
-
-        assertThat(result).allSatisfy(user ->
-                assertThat(user.getLastName()).isNotBlank()
-        );
+        assertThat(result).allSatisfy(user -> {
+            assertThat(user.getFirstName()).isNotBlank();
+            assertThat(user.getLastName()).isNotBlank();
+        });
     }
 
     @Test

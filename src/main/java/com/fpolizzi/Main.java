@@ -97,20 +97,17 @@ public class Main {
         System.out.println("➡️ select user id");
         String userId = scanner.nextLine();
 
-        User user = userService.getUserById(UUID.fromString(userId));
-        if (user == null) {
-            System.out.println("❌ No user found with id " + userId);
-            return;
-        }
-
-        List<Car> userBookedCars = carBookingService.getUserBookedCars(user.getId());
-        if (userBookedCars.isEmpty()) {
-            System.out.printf("❌ user %s has no cars booked", user);
-            return;
-        }
-        for (Car userBookedCar : userBookedCars) {
-            System.out.println(userBookedCar);
-        }
+        userService.getUserById(UUID.fromString(userId)).ifPresentOrElse(
+                user -> {
+                    List<Car> userBookedCars = carBookingService.getUserBookedCars(user.getId());
+                    if (userBookedCars.isEmpty()) {
+                        System.out.printf("❌ user %s has no cars booked", user);
+                    } else {
+                        userBookedCars.forEach(System.out::println);
+                    }
+                },
+                () -> System.out.println("❌ No user found with id " + userId)
+        );
     }
 
     private static void bookCar(UserService userService, CarBookingService carBookingService, Scanner scanner) {
@@ -125,17 +122,17 @@ public class Main {
         String userId = scanner.nextLine();
 
         try {
-            User user = userService.getUserById(UUID.fromString(userId));
-            if (user == null) {
-                System.out.println("❌ No user found with id " + userId);
-            } else {
-                UUID bookingId = carBookingService.bookCar(user, regNumber);
-                String confirmationMessage = """
-                        🎉 Successfully booked car with reg number %s for user %s
-                        Booking ref: %s
-                        """.formatted(regNumber, user, bookingId);
-                System.out.println(confirmationMessage);
-            }
+            userService.getUserById(UUID.fromString(userId)).ifPresentOrElse(
+                    user -> {
+                        UUID bookingId = carBookingService.bookCar(user, regNumber);
+                        String confirmationMessage = """
+                                🎉 Successfully booked car with reg number %s for user %s
+                                Booking ref: %s
+                                """.formatted(regNumber, user, bookingId);
+                        System.out.println(confirmationMessage);
+                    },
+                    () -> System.out.println("❌ No user found with id " + userId)
+            );
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -41,6 +41,15 @@ class UserArrayDataAccessServiceTest {
     }
 
     @Test
+    void getUsers_shouldReturnUsersWithNonNullIds() {
+        List<User> result = underTest.getUsers();
+
+        assertThat(result).allSatisfy(user ->
+                assertThat(user.getId()).isNotNull()
+        );
+    }
+
+    @Test
     void getUsers_shouldReturnUsersWithNonBlankNames() {
         List<User> result = underTest.getUsers();
 
